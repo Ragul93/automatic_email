@@ -69,9 +69,12 @@ async function sendEmail(jobs) {
   const htmlContent = generateHtmlEmail(jobs);
   const toEmail = process.env.RECEIVER_EMAIL;
 
-  if (!toEmail || toEmail === 'your_email@gmail.com') {
-    console.error('Receiver email not configured properly in .env');
-    return;
+  if (!toEmail || toEmail === 'ragulramadoss17@gmail.com') {
+    throw new Error('CRITICAL ERROR: Receiver email not configured. Did you add RECEIVER_EMAIL in your GitHub Repository Secrets?');
+  }
+
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+    throw new Error('CRITICAL ERROR: SMTP credentials missing. Did you add SMTP_USER and SMTP_PASS in your GitHub Repository Secrets?');
   }
 
   try {
@@ -84,6 +87,7 @@ async function sendEmail(jobs) {
     console.log('Message sent: %s', info.messageId);
   } catch (error) {
     console.error('Error sending email:', error.message);
+    throw error; // Force GitHub Action to fail so you know there's an SMTP issue!
   }
 }
 
