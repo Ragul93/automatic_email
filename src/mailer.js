@@ -69,7 +69,7 @@ async function sendEmail(jobs) {
   const htmlContent = generateHtmlEmail(jobs);
   const toEmail = process.env.RECEIVER_EMAIL;
 
-  if (!toEmail || toEmail === 'ragulramadoss17@gmail.com') {
+  if (!toEmail || toEmail === 'your_email@gmail.com') {
     throw new Error('CRITICAL ERROR: Receiver email not configured. Did you add RECEIVER_EMAIL in your GitHub Repository Secrets?');
   }
 
