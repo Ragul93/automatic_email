@@ -12,6 +12,17 @@ const transporter = nodemailer.createTransport({
 });
 
 function generateHtmlEmail(jobs) {
+  if (!jobs || jobs.length === 0) {
+    return `
+      <div style="font-family: Arial, sans-serif; max-width: 800px; margin: auto;">
+        <h2 style="color: #333;">Daily Job Scraper Report</h2>
+        <p style="color: #d9534f; font-weight: bold;">No jobs were dynamically found today!</p>
+        <p>This usually means the job boards (Naukri, LinkedIn, Indeed) blocked the GitHub Actions scraper due to Cloud/Bot protection.</p>
+        <p>Your scheduled cron job successfully ran at 8:00 AM, but returned 0 results.</p>
+      </div>
+    `;
+  }
+
   let tableRows = jobs.map((job, index) => {
     return `
       <tr>
@@ -54,11 +65,7 @@ function generateHtmlEmail(jobs) {
 }
 
 async function sendEmail(jobs) {
-  if (!jobs || jobs.length === 0) {
-    console.log('No jobs to send.');
-    return;
-  }
-
+  // We removed the block that prevented sending an email for 0 jobs
   const htmlContent = generateHtmlEmail(jobs);
   const toEmail = process.env.RECEIVER_EMAIL;
 

@@ -23,10 +23,12 @@ async function runJobScraper() {
   const topJobs = aggregateJobs(naukriJobs, linkedinJobs, indeedJobs);
   console.log(`Aggregated down to top ${topJobs.length} unique jobs.`);
 
+  // We now ALWAYS send an email so you know the script ran successfully, even if 0 jobs were found
   if (topJobs.length > 0) {
     await sendEmail(topJobs);
   } else {
-    console.log('No jobs found today. Skipping email.');
+    console.log('No jobs found today. Sending fallback status email.');
+    await sendEmail([]); // Sends email letting you know it found 0 jobs
   }
   
   console.log(`[${new Date().toISOString()}] Job scraper finished.`);

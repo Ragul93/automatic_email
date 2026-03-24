@@ -1,5 +1,9 @@
 name: Daily Job Scraper
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: 'true'
+
 # Run automatically at 8:00 AM IST (which is 2:30 AM UTC) every day
 on:
   schedule:
@@ -10,8 +14,6 @@ on:
 jobs:
   scrape-and-email:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout Code
